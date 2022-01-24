@@ -1,9 +1,38 @@
-exports.createPages = async ({ actions }) => {
+exports.createPages = async ({ graphql,actions }) => {
   const { createPage } = actions
-  createPage({
-    path: "/using-dsg",
-    component: require.resolve("./src/templates/using-dsg.js"),
-    context: {},
-    defer: true,
-  })
+
+  const result = await graphql(`
+    query {
+      makes: allSanityMake {
+        edges {
+          node {
+            id
+            name
+          }
+        }
+      }
+    }
+  `);
+
+  // console.log(result)
+  //
+  // createPage({
+  //   path: "/make/",
+  //   component: require.resolve("./src/templates/using-dsg.js"),
+  //   context: {},
+  //   defer: true,
+  // })
+
+  const makes = result.data.makes.edges || [];
+
+
+  makes.forEach((edge) => {
+    const makePath = `/make/${edge.node.id}`;
+
+    createPage({
+      path: makePath,
+      component: require.resolve('./src/templates/make.js'),
+      context: { make: edge.node, allMakes: makes },
+    });
+  });
 }
