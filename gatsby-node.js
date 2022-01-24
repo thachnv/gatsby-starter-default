@@ -1,4 +1,4 @@
-exports.createPages = async ({ graphql,actions }) => {
+exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
 
   const result = await graphql(`
@@ -12,27 +12,17 @@ exports.createPages = async ({ graphql,actions }) => {
         }
       }
     }
-  `);
+  `)
 
-  // console.log(result)
-  //
-  // createPage({
-  //   path: "/make/",
-  //   component: require.resolve("./src/templates/using-dsg.js"),
-  //   context: {},
-  //   defer: true,
-  // })
+  const makes = result.data.makes.edges || []
 
-  const makes = result.data.makes.edges || [];
-
-
-  makes.forEach((edge) => {
-    const makePath = `/make/${edge.node.id}`;
+  makes.forEach(edge => {
+    const makePath = `/make/${edge.node.id}`
 
     createPage({
       path: makePath,
-      component: require.resolve('./src/templates/make.js'),
+      component: require.resolve("./src/templates/make.js"),
       context: { make: edge.node, allMakes: makes },
-    });
-  });
+    })
+  })
 }
