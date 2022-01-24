@@ -7,7 +7,6 @@ exports.createPages = async ({ graphql, actions }) => {
         edges {
           node {
             id
-            name
           }
         }
       }
@@ -22,7 +21,7 @@ exports.createPages = async ({ graphql, actions }) => {
     createPage({
       path: makePath,
       component: require.resolve("./src/templates/make.js"),
-      context: { make: edge.node, allMakes: makes },
+      context: { id: edge.node.id },
     })
   })
 }
