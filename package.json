@@ -28,7 +28,7 @@
   ],
   "license": "0BSD",
   "scripts": {
-    "build": "gatsby build --log-pages",
+    "build": "gatsby build --verbose --log-pages",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "start": "gatsby develop",
